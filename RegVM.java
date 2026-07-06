@@ -5,6 +5,8 @@ public class RegVM {
     
 
     private String name;
+    public String getName() {return name;}
+    
     private Item slots[];
 
 

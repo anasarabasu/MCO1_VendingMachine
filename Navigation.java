@@ -5,7 +5,7 @@ public final class Navigation {
     public static SpecialVM currSpecialVM = null;
 
 
-    public static void mainMenu() {
+    public static int mainMenu() {
 
         System.out.println(
             "\n" +
@@ -32,6 +32,8 @@ public final class Navigation {
             case 3 -> System.out.println(C.YEL+ " PROGRAM CLOSED");
         }
         
+        return selection;
+
     }
 
 
@@ -60,9 +62,12 @@ public final class Navigation {
 
     private static void testMenu() {
 
+            String vm = currRegVM == null ? currSpecialVM.getName() : currRegVM.getName();
+
             System.out.println(
+                "\n" +
                 "-".repeat(C.line) + "\n" +
-                "TEST A VENDING MACHINE\n" +
+                "TEST A VENDING MACHINE - " +vm+ "\n" +
                 "-".repeat(C.line) + "\n" +
                 
                 " [1] Vending features\n" +
@@ -70,11 +75,15 @@ public final class Navigation {
             );
             
             switch (Tools.getRangeInput(1, 2)) {
-                // case 1 ->
-                // case 2 ->
+                case 1 -> vendingMenu();
+                case 2 -> maintenanceMenu();
             }
 
     }
 
+    private static void vendingMenu() {}
+
+    private static void maintenanceMenu() {}
+ 
 
 }
