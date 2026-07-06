@@ -90,55 +90,65 @@ public final class Navigation {
 
     private static void individualVending() {
         
-        Item item = currVM.selectItem();
         ArrayList<Double> bills = new ArrayList<>();
+        ItemSlot item = currVM.selectItem();
 
-        int mode;
-        do {
-            System.out.println(
-                "\n\n" +
-                C.YEL +item.getName()+ ", " +item.getCalories()+ " calories - " +item.getPrice()+C.DEF+ "\n" +
-                " [1] Accept payment\n" +
-                " [2] Dispense item\n" +
-                " [3] Return change\n" +
-                " [4] Back\n"
-            );
-            
-
-            mode = Tools.rangeInput(1, 4);
-            switch (mode) {
-                case 1 -> bills.addAll(currVM.acceptPayment(item.getPrice()));
-                case 2 -> currVM.dispenseItem(bills, item);
-                case 3 -> {
-                    if(bills.isEmpty()) System.out.println(C.RED+ " [!] ERROR! Nothing to return" +C.DEF);
-                    else currVM.returnChange(bills);
+        if(item != null) {
+            int mode;
+            do {
+                System.out.println(
+                    " [1] Accept payment\n" +
+                    " [2] Dispense item\n" +
+                    " [3] Return change\n" +
+                    " [4] Back\n"
+                );
+                
+                
+                mode = Tools.rangeInput(1, 4);
+                switch (mode) {
+                    case 1 -> bills.addAll(currVM.acceptPayment(item.getPrice()));
+                    case 2 -> currVM.dispenseItem(bills, item);
+                    case 3 -> {
+                        if(bills.isEmpty()) System.out.println(C.RED+ " [!] ERROR! Nothing to return" +C.DEF);
+                        else currVM.returnChange(bills);
+                    }
+                    // case 4 -> vendingMenu();
                 }
-                case 4 -> vendingMenu();
-            }
-        } 
-        while (mode != 4);
+                
+                System.out.println(
+                    "\n\n" +
+                    C.YEL +item.getName()+ ", " +item.getCalories()+ " calories - " +item.getPrice()+C.DEF
+                );
+            } 
+            while (mode != 4);
+        }
 
     }
 
     private static void vendingMenu() {
 
-        System.out.println(
-            "\n\n" +
-            "-".repeat(C.LINE) + "\n" +
-            "VENDING FEATURES\n" +
-            "-".repeat(C.LINE) + "\n" +
-
-            " [1] Run entire vending process\n" +
-            " [2] Test individual functions\n" +
-            " [3] Finish testing\n"
-        );
-
-        int mode = Tools.rangeInput(1, 3);
-        switch (mode) {
-            case 1 -> currVM.vendingProcess();
-            case 2 -> individualVending();
-            case 3 -> testMenu();
-        }
+        int mode;
+        do {
+            
+            System.out.println(
+                "\n\n" +
+                "-".repeat(C.LINE) + "\n" +
+                "VENDING FEATURES\n" +
+                "-".repeat(C.LINE) + "\n" +
+                
+                " [1] Run entire vending process\n" +
+                " [2] Test individual functions\n" +
+                " [3] Finish testing\n"
+            );
+            
+            mode = Tools.rangeInput(1, 3);
+            switch (mode) {
+                case 1 -> currVM.vendingProcess();
+                case 2 -> individualVending();
+                case 3 -> testMenu();
+            }
+        } 
+        while (mode != 3);
 
     }
 

@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 
+import Items.Item;
+
 public class VM {
     
 
@@ -16,6 +18,8 @@ public class VM {
 
     public VM() {
 
+        
+
         // NAME
         System.out.print(
             "\n Enter a name for this vending machine:" +
@@ -23,7 +27,7 @@ public class VM {
         );
         name = Tools.scan.next();
 
-        if(name.equals("skip")) {items = new Item[1]; return;} 
+        if(name.equals("skip")) {test1(); return;} 
 
 
         // CASH RESERVE
@@ -76,16 +80,16 @@ public class VM {
     }
 
 
-    // private void 
-
     // ----------------------------------------------------
     // TEST
     public void test1() {
-cashReserve = new int[]{
+
+        cashReserve = new int[]{
             1, 0, 0, 3, 0, 7, 
             0, 0, 2, 5, 
             3, 2, 1, 2
         };
+
         items = new Item[9];
         items[0] = new Item("Choco", 100, 100);
         items[1] = new Item("Soda", 50, 1000);
@@ -105,12 +109,18 @@ cashReserve = new int[]{
 
     public void vendingProcess() {
 
+        Item item = selectItem();
+        if(item != null) {
+            ArrayList<Double> payment = acceptPayment(item.getPrice());
+            if(payment != null) {
+                dispenseItem(payment, item);
+            }
+        }
+
     }
 
     
     public Item selectItem() {
-
-        test1();
     
         // DISPLAY
         System.out.print(
@@ -120,10 +130,11 @@ cashReserve = new int[]{
             "-".repeat(C.LINE*3)
         );
         
+        System.out.print("\n00 CANCEL");
         for (int i = 0; i < items.length; i++) {
             if(i % 4 == 0) System.out.println();
             if(!items[i].isAvailable()) System.out.print(C.RED);
-            System.out.print("#" +(i+1)+ " " +String.format("%-24s", (items[i].getName()+ " (" +String.format("%,.2f", items[i].getPrice())+ ")")) + C.DEF);
+            System.out.print(String.format("%02d", (i+1))+ " " +String.format("%-24s", (items[i].getName()+ " (" +String.format("%,.2f", items[i].getPrice())+ ")")) + C.DEF);
         }
 
         System.out.println("\n" + "-".repeat(C.LINE*3) + "\n");
@@ -132,33 +143,37 @@ cashReserve = new int[]{
         // INPUT
         System.out.println(" Enter item number:");
 
-        int selection = Tools.rangeInput(1, items.length)-1;
-        if(!items[selection].isAvailable()) {
-            System.out.println(C.RED + " [!] This item is not available");
-            return null;
+        int selection = Tools.rangeInput(0, items.length)-1;
+
+        while (!items[selection].isAvailable() && selection >= 0) {
+            System.out.println(C.RED + " [!] ERROR! This item is not available, please select different item\n" + C.DEF);
+            selection = Tools.rangeInput(0, items.length)-1;
         }
-        else return items[selection];
+
+        if(selection >= 0) {
+            System.out.println(
+                "\n\n" +
+                C.YEL +items[selection].getName()+ ", " +items[selection].getCalories()+ " calories - " +items[selection].getPrice()+C.DEF
+            );
+            return items[selection];
+        }
+        else return null;
 
     } 
 
 
     // ----
     
-    private final double BILLS[] = new double[]{
-        0,
-        1000, 500, 200, 100, 50, 20,
-        20, 10, 5, 1,
-        0.25, 0.10, 0.05, 0.01
-    };
+
     
     public ArrayList<Double> acceptPayment(double price) {
 
         System.out.println(
+            "\n\n Insert cash:\n" +
             " [00] CANCEL TRANSACTION\n" +
             " [01] 1000    [02] 500     [03] 200     [04] 100    [05] 50    [06] 20\n" +
             " [07] 20      [08] 10      [08] 5       [10] 1\n" +
-            " [11] 0.25    [12] 0.10    [13] 0.05    [14] 0.01\n\n" +
-            " Insert cash:"
+            " [11] 0.25    [12] 0.10    [13] 0.05    [14] 0.01\n\n"
         );
         
         int input = Tools.rangeInput(0, 13);
@@ -166,8 +181,8 @@ cashReserve = new int[]{
         
         
         ArrayList<Double> bills = new ArrayList<>();
-        bills.add(BILLS[input]);
-        double payment = BILLS[input];
+        bills.add(C.BILLS[input]);
+        double payment = C.BILLS[input];
 
         while (payment < price && input != 0) {
             System.out.println(C.RED + " [!] INSUFFICIENT PAYMENT! Please insert more cash, or cancel transaction\n\n" +C.DEF+
@@ -176,10 +191,10 @@ cashReserve = new int[]{
             );
 
             input = Tools.rangeInput(0, 13);
-            payment += BILLS[input];
+            payment += C.BILLS[input];
             
             if(input == 0) System.out.println(C.YEL +" Transaction cancelled" +C.DEF);
-            else bills.add(BILLS[input]);
+            else bills.add(C.BILLS[input]);
         }            
 
         if(input == 0) {
@@ -200,13 +215,13 @@ cashReserve = new int[]{
 
         ArrayList<Double> returnedBills = new ArrayList<>();
         
-        for (int i = 0; i < BILLS.length-1; i++) {
-            if(remaining / BILLS[i+1] > 0 && cashReserve[i] > 0) {
-                int denominations = (int) (remaining / BILLS[i+1]);
+        for (int i = 0; i < C.BILLS.length-1; i++) {
+            if(remaining / C.BILLS[i+1] > 0 && cashReserve[i] > 0) {
+                int denominations = (int) (remaining / C.BILLS[i+1]);
 
                 while (denominations > 0 && cashReserve[i] > 0) {
-                    remaining -= BILLS[i+1];
-                    returnedBills.add(BILLS[i+1]);
+                    remaining -= C.BILLS[i+1];
+                    returnedBills.add(C.BILLS[i+1]);
                     
                     denominations--;
                     cashReserve[i]--;
@@ -233,7 +248,11 @@ cashReserve = new int[]{
         
     public void dispenseItem(ArrayList<Double> bills, Item item) {
         
-        if(calculatePayment(bills, item.getPrice())) item.decreaseStock();
+        if(calculatePayment(bills, item.getPrice()) && item.isAvailable()) {
+            item.decreaseStock();
+            System.out.println(" Item dispensed: " +item.getName());
+        }
+        else System.out.println(C.RED + " [!] This item is not available");
 
     }
 
@@ -243,12 +262,13 @@ cashReserve = new int[]{
 
     public void returnChange(ArrayList<Double> bills) {
 
+        System.out.println();
         double total = 0;
         for (Double bill : bills) {
             System.out.print("\n Php " +bill);
             total +=bill;
         }
-        System.out.println(C.YEL+ "\n Change total: " +total+ "\n" +C.DEF);
+        System.out.println(C.YEL+ "\n Change total: " +total +C.DEF);
         bills.clear();
 
     }
