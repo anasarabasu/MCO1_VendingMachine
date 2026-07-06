@@ -7,7 +7,8 @@ public class Program {
         
         // main program loop
         // Navigation.mainMenu();
-        new VM().vendingProcess();
+        // System.out.println(0.1234/0.25);
+        new VM().acceptPayment(349);
 
         Tools.cleanup();
 

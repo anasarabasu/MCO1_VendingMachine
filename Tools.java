@@ -6,7 +6,7 @@ public final class Tools {
     public static Scanner scan = new Scanner(System.in);
 
 
-    public static int getRangeInput(int MIN, int MAX) {
+    public static int rangeInput(int MIN, int MAX) {
 
         boolean isValid = false;
         int val = 0;
@@ -21,7 +21,7 @@ public final class Tools {
                 else isValid = true;
             } 
             catch (Exception e) {
-                System.out.println(C.RED+ " [!] INVALID INPUT! Please enter a number only\n" +C.DEF);
+                System.out.println(C.RED+ " [!] INVALID INPUT! Please enter a number\n" +C.DEF);
                 scan.nextLine(); // removes the new line from the input
             }
         }
@@ -30,23 +30,23 @@ public final class Tools {
 
     }
 
-
-    public static float getInfiniteInput() {
-
+    
+    public static double nonNegDouble() {
+        
         boolean isValid = false;
-        float val = 0;
-
+        double val = 0;
+        
         while (!isValid) {
             System.out.print(" >> ");
-
+            
             try {
-                val = scan.nextFloat();
+                val = scan.nextDouble();
                 
                 if(val < 0) System.out.println(C.RED+ " [!] INVALID INPUT! Please enter a non-negative number\n" +C.DEF);
                 else isValid = true;
             } 
             catch (Exception e) {
-                System.out.println(C.RED+ " [!] INVALID INPUT! Please enter a number only\n" +C.DEF);
+                System.out.println(C.RED+ " [!] INVALID INPUT! Please enter a number\n" +C.DEF);
                 scan.nextLine(); // removes the new line from the input
             }
         }   
@@ -55,6 +55,32 @@ public final class Tools {
         
     }
 
+    
+    public static int nonNegInt() {
+
+        boolean isValid = false;
+        int val = 0;
+
+        while (!isValid) {
+            System.out.print(" >> ");
+
+            try {
+                val = scan.nextInt();
+                
+                if(val < 0) System.out.println(C.RED+ " [!] INVALID INPUT! Please enter a non-negative number\n" +C.DEF);
+                else isValid = true;
+            } 
+            catch (Exception e) {
+                System.out.println(C.RED+ " [!] INVALID INPUT! Please enter a whole number\n" +C.DEF);
+                scan.nextLine(); // removes the new line from the input
+            }
+        }   
+
+        return val;
+        
+    }
+    
+    
     public static void cleanup() {
         scan.close();
     }

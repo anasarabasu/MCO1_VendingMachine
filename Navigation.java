@@ -18,11 +18,11 @@ public final class Navigation {
         );
 
 
-        int mode = Tools.getRangeInput(1, 3);
+        int mode = Tools.rangeInput(1, 3);
 
         while (mode == 2 && currVM == null) {
             System.out.println(C.RED+ " [!] NO VENDING MACHINE! Please create a vending machine first\n" +C.DEF);
-            mode = Tools.getRangeInput(1, 3);
+            mode = Tools.rangeInput(1, 3);
         }
 
         switch (mode) {
@@ -51,7 +51,7 @@ public final class Navigation {
 
         currVM = null;
 
-        switch (Tools.getRangeInput(1, 2)) {
+        switch (Tools.rangeInput(1, 2)) {
             case 1 -> currVM = new VM();
             // case 2 -> currVM = new VM(); 
         }
@@ -74,7 +74,7 @@ public final class Navigation {
                 " [3] Back to main menu\n"
             );
             
-            switch (Tools.getRangeInput(1, 3)) {
+            switch (Tools.rangeInput(1, 3)) {
                 case 1 -> vendingMenu();
                 // case 2 -> maintenanceMenu();
                 case 3 -> mainMenu();
@@ -95,7 +95,7 @@ public final class Navigation {
             " [4] Back\n"
         );
 
-        int mode = Tools.getRangeInput(1, 4);
+        int mode = Tools.rangeInput(1, 4);
         switch (mode) {
             case 4 -> vendingMenu();
         }
@@ -117,7 +117,7 @@ public final class Navigation {
             " [3] Finish testing\n"
         );
 
-        int mode = Tools.getRangeInput(1, 3);
+        int mode = Tools.rangeInput(1, 3);
         switch (mode) {
             case 1 -> currVM.vendingProcess();
             case 2 -> individualVending();
