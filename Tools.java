@@ -3,34 +3,58 @@ import java.util.Scanner;
 public final class Tools {
     
 
-    private static Scanner scan = new Scanner(System.in);
+    public static Scanner scan = new Scanner(System.in);
 
 
-    public static int getMenuInput(int OPTIONS) {
-        
-        int selected = -1;
-        while (selected < 0) {
+    public static int getRangeInput(int MIN, int MAX) {
+
+        boolean isValid = false;
+        int val = 0;
+
+        while (!isValid) {
             System.out.print(" >> ");
             
             try {
-                selected = scan.nextInt();
-
-                if (selected <= 0 || selected > OPTIONS) {
-                    System.out.println(C.RED+ " [!] INVALID CHOICE! Please enter a number from 1-" +OPTIONS+ "\n" +C.DEF);
-                    selected = -1;
-                }
+                val = scan.nextInt();
+                
+                if(val < MIN || val > MAX) System.out.println(C.RED+ " [!] INVALID INPUT! Please enter the a number within the valid range\n" +C.DEF);
+                else isValid = true;
             } 
             catch (Exception e) {
-                System.out.println(C.RED+ " [!] INVALID INPUT! Please enter a number\n" +C.DEF);
+                System.out.println(C.RED+ " [!] INVALID INPUT! Please enter a number only\n" +C.DEF);
                 scan.nextLine(); // removes the new line from the input
             }
         }
-        
-        return selected;
+
+        return val;
+
+    }
+
+
+    public static float getInfiniteInput() {
+
+        boolean isValid = false;
+        float val = 0;
+
+        while (!isValid) {
+            System.out.print(" >> ");
+
+            try {
+                val = scan.nextFloat();
+                
+                if(val < 0) System.out.println(C.RED+ " [!] INVALID INPUT! Please enter a non-negative number\n" +C.DEF);
+                else isValid = true;
+            } 
+            catch (Exception e) {
+                System.out.println(C.RED+ " [!] INVALID INPUT! Please enter a number only\n" +C.DEF);
+                scan.nextLine(); // removes the new line from the input
+            }
+        }   
+
+        return val;
         
     }
-    
-    
+
     public static void cleanup() {
         scan.close();
     }

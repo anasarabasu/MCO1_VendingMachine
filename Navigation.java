@@ -19,11 +19,11 @@ public final class Navigation {
         );
 
 
-        int selection = Tools.getMenuInput(3);
+        int selection = Tools.getRangeInput(1, 3);
 
         while (selection == 2 && (currRegVM == null && currSpecialVM == null)) {
             System.out.println(C.RED+ " [!] NO VENDING MACHINE! Please create a vending machine first\n" +C.DEF);
-            selection = Tools.getMenuInput(3);
+            selection = Tools.getRangeInput(1, 3);
         }
         
         switch (selection) {
@@ -31,6 +31,7 @@ public final class Navigation {
             case 2 -> testMenu();
             case 3 -> System.out.println(C.YEL+ " PROGRAM CLOSED");
         }
+        
     }
 
 
@@ -49,7 +50,7 @@ public final class Navigation {
         currRegVM = null;
         currSpecialVM = null;
 
-        switch (Tools.getMenuInput(2)) {
+        switch (Tools.getRangeInput(1, 2)) {
             case 1 -> currRegVM = new RegVM();
             case 2 -> currSpecialVM = new SpecialVM();
         }
@@ -68,7 +69,7 @@ public final class Navigation {
                 " [2] Maintenance features"
             );
             
-            switch (Tools.getMenuInput(2)) {
+            switch (Tools.getRangeInput(1, 2)) {
                 // case 1 ->
                 // case 2 ->
             }
