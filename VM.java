@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class VM {
     
 
@@ -10,68 +12,66 @@ public class VM {
     // PAPER :  1k   500  200  100  50  20
     // COINS :  20   10   5    1
     // CENTS : .25  .10  .05  .01
-    // private int coinReserve[] = new int[4]; 
-    // private int centReserve[] = new int[4]; 
 
 
     public VM() {
 
         // NAME
-        // System.out.print(
-        //     "\n Enter a name for this vending machine:" +
-        //     "\n >> " 
-        // );
-        // name = Tools.scan.next();
+        System.out.print(
+            "\n Enter a name for this vending machine:" +
+            "\n >> " 
+        );
+        name = Tools.scan.next();
 
-        // if(name.equals("skip")) {items = new Item[1]; return;} 
+        if(name.equals("skip")) {items = new Item[1]; return;} 
 
 
-        // // CASH RESERVE
-        // System.out.println("\n Enter the machine's initial cash reserve:");
+        // CASH RESERVE
+        System.out.println("\n Enter the machine's initial cash reserve:");
 
-        // System.out.println("\n\tNumber of Php1000 bills: "); billReserve[0] = Tools.nonNegInt();
-        // System.out.println("\n\tNumber of Php500 bills: "); billReserve[1] = Tools.nonNegInt();
-        // System.out.println("\n\tNumber of Php200 bills: "); billReserve[2] = Tools.nonNegInt();
-        // System.out.println("\n\tNumber of Php100 bills: "); billReserve[3] = Tools.nonNegInt();
-        // System.out.println("\n\tNumber of Php50 bills: "); billReserve[4] = Tools.nonNegInt();
-        // System.out.println("\n\tNumber of Php20 bills: "); billReserve[5] = Tools.nonNegInt();
+        System.out.println("\n\tNumber of Php1000 bills: "); cashReserve[0] = Tools.nonNegInt();
+        System.out.println("\n\tNumber of Php500 bills: "); cashReserve[1] = Tools.nonNegInt();
+        System.out.println("\n\tNumber of Php200 bills: "); cashReserve[2] = Tools.nonNegInt();
+        System.out.println("\n\tNumber of Php100 bills: "); cashReserve[3] = Tools.nonNegInt();
+        System.out.println("\n\tNumber of Php50 bills: "); cashReserve[4] = Tools.nonNegInt();
+        System.out.println("\n\tNumber of Php20 bills: "); cashReserve[5] = Tools.nonNegInt();
 
-        // System.out.println("\n\tNumber of Php20 coins: "); coinReserve[0] = Tools.nonNegInt();
-        // System.out.println("\n\tNumber of Php10 coins: "); coinReserve[1] = Tools.nonNegInt();
-        // System.out.println("\n\tNumber of Php5 coins: "); coinReserve[2] = Tools.nonNegInt();
-        // System.out.println("\n\tNumber of Php1 coins: "); coinReserve[3] = Tools.nonNegInt();
+        System.out.println("\n\tNumber of Php20 coins: "); cashReserve[6] = Tools.nonNegInt();
+        System.out.println("\n\tNumber of Php10 coins: "); cashReserve[7] = Tools.nonNegInt();
+        System.out.println("\n\tNumber of Php5 coins: "); cashReserve[8] = Tools.nonNegInt();
+        System.out.println("\n\tNumber of Php1 coins: "); cashReserve[9] = Tools.nonNegInt();
 
-        // System.out.println("\n\tNumber of Php0.25 coins: "); centReserve[0] = Tools.nonNegInt();
-        // System.out.println("\n\tNumber of Php0.10 coins: "); centReserve[1] = Tools.nonNegInt();
-        // System.out.println("\n\tNumber of Php0.05 coins: "); centReserve[2] = Tools.nonNegInt();
-        // System.out.println("\n\tNumber of Php0.01 coins: "); centReserve[3] = Tools.nonNegInt();
+        System.out.println("\n\tNumber of Php0.25 coins: "); cashReserve[10] = Tools.nonNegInt();
+        System.out.println("\n\tNumber of Php0.10 coins: "); cashReserve[11] = Tools.nonNegInt();
+        System.out.println("\n\tNumber of Php0.05 coins: "); cashReserve[12] = Tools.nonNegInt();
+        System.out.println("\n\tNumber of Php0.01 coins: "); cashReserve[13] = Tools.nonNegInt();
 
         
-        // // ITEM SLOTS
-        // System.out.print("\n Enter the number of slots (8-24):\n");
-        // items = new Item[Tools.rangeInput(8, 24)];
+        // ITEM SLOTS
+        System.out.print("\n Enter the number of slots (8-24):\n");
+        items = new Item[Tools.rangeInput(8, 24)];
 
-        // for (int i = 0; i < items.length; i++) {
-        //     System.out.print(
-        //         "\n" +
-        //         "-".repeat(C.LINE) +
-        //         "\n Slot " + (i+1) +
-        //         "\n Item name:" +
-        //         "\n >> "
-        //     );
-        //     String name = Tools.scan.next();
+        for (int i = 0; i < items.length; i++) {
+            System.out.print(
+                "\n" +
+                "-".repeat(C.LINE) +
+                "\n Slot " + (i+1) +
+                "\n Item name:" +
+                "\n >> "
+            );
+            String name = Tools.scan.next();
 
-        //     System.out.print("\n Price:\n");
-        //     double price = Tools.nonNegDouble();
+            System.out.print("\n Price:\n");
+            double price = Tools.nonNegDouble();
 
-        //     System.out.print("\n Calories:\n");
-        //     int calories = Tools.nonNegInt();
+            System.out.print("\n Calories:\n");
+            int calories = Tools.nonNegInt();
 
-        //     System.out.print("\n Slot capacity: (1-16)\n");
-        //     int capacity = Tools.rangeInput(1, 16);
+            System.out.print("\n Slot capacity: (1-16)\n");
+            int capacity = Tools.rangeInput(1, 16);
             
-        //     items[i] = new Item(name, price, calories);
-        // }
+            items[i] = new Item(name, price, calories);
+        }
 
     }
 
@@ -81,8 +81,11 @@ public class VM {
     // ----------------------------------------------------
     // TEST
     public void test1() {
-        cashReserve = new int[]{1, 2, 1, 4, 1, 2, 10, 2, 1, 3, 3, 2, 1, 2};
-
+cashReserve = new int[]{
+            1, 0, 0, 3, 0, 7, 
+            0, 0, 2, 5, 
+            3, 2, 1, 2
+        };
         items = new Item[9];
         items[0] = new Item("Choco", 100, 100);
         items[1] = new Item("Soda", 50, 1000);
@@ -102,16 +105,11 @@ public class VM {
 
     public void vendingProcess() {
 
-        int itemCode = selectItem();
-        if(itemCode != -1) {
-            acceptPayment(items[itemCode].getPrice());
-        }
-
     }
 
     
-    public int selectItem() {
-        
+    public Item selectItem() {
+
         test1();
     
         // DISPLAY
@@ -125,7 +123,7 @@ public class VM {
         for (int i = 0; i < items.length; i++) {
             if(i % 4 == 0) System.out.println();
             if(!items[i].isAvailable()) System.out.print(C.RED);
-            System.out.print("#" +(i+1)+ " " +String.format("%-24s", (items[i].getName()+ " (" +items[i].getPrice()+ ")")) + C.DEF);
+            System.out.print("#" +(i+1)+ " " +String.format("%-24s", (items[i].getName()+ " (" +String.format("%,.2f", items[i].getPrice())+ ")")) + C.DEF);
         }
 
         System.out.println("\n" + "-".repeat(C.LINE*3) + "\n");
@@ -134,74 +132,126 @@ public class VM {
         // INPUT
         System.out.println(" Enter item number:");
 
-        int selection = Tools.rangeInput(1, items.length);
+        int selection = Tools.rangeInput(1, items.length)-1;
         if(!items[selection].isAvailable()) {
             System.out.println(C.RED + " [!] This item is not available");
-            return -1;
+            return null;
         }
-        else return selection;
+        else return items[selection];
 
     } 
+
+
+    // ----
     
+    private final double BILLS[] = new double[]{
+        0,
+        1000, 500, 200, 100, 50, 20,
+        20, 10, 5, 1,
+        0.25, 0.10, 0.05, 0.01
+    };
     
+    public ArrayList<Double> acceptPayment(double price) {
 
-    public boolean acceptPayment(double price) {
+        System.out.println(
+            " [00] CANCEL TRANSACTION\n" +
+            " [01] 1000    [02] 500     [03] 200     [04] 100    [05] 50    [06] 20\n" +
+            " [07] 20      [08] 10      [08] 5       [10] 1\n" +
+            " [11] 0.25    [12] 0.10    [13] 0.05    [14] 0.01\n\n" +
+            " Insert cash:"
+        );
+        
+        int input = Tools.rangeInput(0, 13);
+        if(input == 0) System.out.println(C.YEL+ " Transaction cancelled" +C.DEF);
+        
+        
+        ArrayList<Double> bills = new ArrayList<>();
+        bills.add(BILLS[input]);
+        double payment = BILLS[input];
 
-        cashReserve = new int[]{
-            1, 2, 1, 4, 1, 2, 
-            10, 2, 1, 3, 
-            3, 2, 1, 2};
+        while (payment < price && input != 0) {
+            System.out.println(C.RED + " [!] INSUFFICIENT PAYMENT! Please insert more cash, or cancel transaction\n\n" +C.DEF+
 
+            " Insert cash: (Current: " +String.format("%,.2f", payment)+ ")"
+            );
 
-        double billList[] = {
-            1000, 500, 200, 100, 50, 20,
-            20, 10, 5, 1,
-            0.25, 0.10, 0.05, 0.01
-        };
+            input = Tools.rangeInput(0, 13);
+            payment += BILLS[input];
+            
+            if(input == 0) System.out.println(C.YEL +" Transaction cancelled" +C.DEF);
+            else bills.add(BILLS[input]);
+        }            
 
-        System.out.println("Insert cash:");
-
-        double payment = Tools.nonNegDouble();
-        while (payment < price) {
-            System.out.println(C.RED + " [!] Please enter a valid amount" +C.DEF);
-            payment = Tools.nonNegDouble();
+        if(input == 0) {
+            returnChange(bills);
+            return null;
         }
-        double change = payment - price;
-
-
-        String changeInfo = "";
-        
-        for (int i = 0; i < billList.length; i++) {
-            int denom = 0;
-
-            if(change / billList[i] > 0 && cashReserve[i] > 0) {
-                int rawDenom = (int) (change / billList[i]);
-                
-                for (; rawDenom > 0 && cashReserve[i] > 0; denom++) {
-                    change -= billList[i];
-
-                    rawDenom--;
-                    cashReserve[i]--;
-                }
-
-                if(denom > 0) changeInfo += "\nPhp " +billList[i]+ " (" +Math.abs(denom)+ ")";
-            }
-        }
-
-        System.out.println(changeInfo);
-
-        if(change > 0)
-            System.out.println("oh no");
-        
-        
-        return true;
+        else return bills;
 
     }
 
 
-    public void dispenseItem() {}
-    public void returnChange() {}
-    public void printItemInfo() {}
+    private boolean calculatePayment(ArrayList<Double> bills, double price) {
+
+        double payment = 0;
+        for (Double bill : bills) payment += bill;
+        
+        double remaining = payment-price;
+
+        ArrayList<Double> returnedBills = new ArrayList<>();
+        
+        for (int i = 0; i < BILLS.length-1; i++) {
+            if(remaining / BILLS[i+1] > 0 && cashReserve[i] > 0) {
+                int denominations = (int) (remaining / BILLS[i+1]);
+
+                while (denominations > 0 && cashReserve[i] > 0) {
+                    remaining -= BILLS[i+1];
+                    returnedBills.add(BILLS[i+1]);
+                    
+                    denominations--;
+                    cashReserve[i]--;
+                }
+            }
+        }
+        
+        if(remaining > 0) {
+            System.out.println(C.RED+ " [!] TRANSACTION CANCELLED! The machine has insufficient change" +C.DEF);
+            returnChange(bills);
+            return false;
+        }
+        else {
+            bills.clear();
+            returnChange(returnedBills);
+            return true;
+        }
+
+    }
+
+
+    // ----
+        
+        
+    public void dispenseItem(ArrayList<Double> bills, Item item) {
+        
+        if(calculatePayment(bills, item.getPrice())) item.decreaseStock();
+
+    }
+
+
+    // ----
+
+
+    public void returnChange(ArrayList<Double> bills) {
+
+        double total = 0;
+        for (Double bill : bills) {
+            System.out.print("\n Php " +bill);
+            total +=bill;
+        }
+        System.out.println(C.YEL+ "\n Change total: " +total+ "\n" +C.DEF);
+        bills.clear();
+
+    }
 
     
     // ----------------------------------------------------

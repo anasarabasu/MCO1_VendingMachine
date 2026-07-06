@@ -28,6 +28,7 @@ public class Item {
 
     private int capacity;
     private int stock = 1;
+    public void decreaseStock() {stock--;}
     
     public Item(String name, double price, int calories) {
         this.name = name;

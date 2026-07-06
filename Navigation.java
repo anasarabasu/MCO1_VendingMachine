@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public final class Navigation {
 
 
@@ -87,20 +89,34 @@ public final class Navigation {
 
 
     private static void individualVending() {
-        System.out.println(
-            "\n\n" +
-            " [1] Accept payment\n" +
-            " [2] Dispense item\n" +
-            " [3] Return change\n" +
-            " [4] Back\n"
-        );
+        
+        Item item = currVM.selectItem();
+        ArrayList<Double> bills = new ArrayList<>();
 
-        int mode = Tools.rangeInput(1, 4);
-        switch (mode) {
-            case 4 -> vendingMenu();
-        }
+        int mode;
+        do {
+            System.out.println(
+                "\n\n" +
+                C.YEL +item.getName()+ ", " +item.getCalories()+ " calories - " +item.getPrice()+C.DEF+ "\n" +
+                " [1] Accept payment\n" +
+                " [2] Dispense item\n" +
+                " [3] Return change\n" +
+                " [4] Back\n"
+            );
+            
 
-        if(mode  != 4) individualVending();
+            mode = Tools.rangeInput(1, 4);
+            switch (mode) {
+                case 1 -> bills.addAll(currVM.acceptPayment(item.getPrice()));
+                case 2 -> currVM.dispenseItem(bills, item);
+                case 3 -> {
+                    if(bills.isEmpty()) System.out.println(C.RED+ " [!] ERROR! Nothing to return" +C.DEF);
+                    else currVM.returnChange(bills);
+                }
+                case 4 -> vendingMenu();
+            }
+        } 
+        while (mode != 4);
 
     }
 
