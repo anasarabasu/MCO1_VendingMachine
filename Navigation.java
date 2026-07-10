@@ -1,11 +1,28 @@
-import java.util.ArrayList;
+import VM.C;
+import VM.Tools;
+import VM.VendingMachine;
 
+
+/**
+ * Provides the menu-driven interface for interacting with the vending
+ * machine application. This class manages menu navigation and coordinates
+ * the creation, testing, and operation of vending machines.
+ */
 public final class Navigation {
 
 
-    public static VM currVM = null;
+    /**
+     * The vending machine currently being tested.
+     * A value of {@code null} indicates that no vending machine has been created.
+     */
+    private static VendingMachine currVM = null;
 
 
+
+    /**
+     * Displays the application's main menu and directs the user to create,
+     * test, or exit the vending machine program.
+     */
     public static void mainMenu() {
 
         System.out.println(
@@ -36,39 +53,38 @@ public final class Navigation {
     }
 
 
-    // ----------------------------------------------------
-    
 
+    /**
+     * Displays the vending machine creation menu and creates a new vending
+     * machine based on the user's selection.
+     */
     private static void createMenu() {
         
         System.out.println(
             "\n\n" +
             "-".repeat(C.LINE) + "\n" +
             "CREATE A VENDING MACHINE\n" +
-            "-".repeat(C.LINE) + "\n" +
-
-            " [1] Regular\n" +
-            " [2] Special\n"
+            "-".repeat(C.LINE)
         );
-
-        currVM = null;
-
-        switch (Tools.rangeInput(1, 2)) {
-            case 1 -> currVM = new VM();
-            // case 2 -> currVM = new VM(); 
-        }
+        
+        currVM = new VendingMachine();
 
         mainMenu();
 
     }
 
 
+
+    /**
+     * Displays the testing menu for the current vending machine and allows the
+     * user to access its vending and maintenance features.
+     */
     private static void testMenu() {
 
             System.out.println(
                 "\n\n" +
                 "-".repeat(C.LINE) + "\n" +
-                "TEST A VENDING MACHINE - " +currVM.getName()+ "\n" +
+                "TEST A VENDING MACHINE - " +currVM.getType()+ "\n" +
                 "-".repeat(C.LINE) + "\n" +
                 
                 " [1] Vending features\n" +
@@ -78,22 +94,26 @@ public final class Navigation {
             
             switch (Tools.rangeInput(1, 3)) {
                 case 1 -> vendingMenu();
-                // case 2 -> maintenanceMenu();
+                case 2 -> maintenanceMenu();
                 case 3 -> mainMenu();
             }
 
     }
 
 
+
     // ----------------------------------------------------
+    // VENDING FEATURES
 
 
+    /**
+     * Allows the user to test individual vending operations after selecting an
+     * item. Payment, dispensing, and change-return functions may be invoked
+     * independently.
+     */
     private static void individualVending() {
         
-        ArrayList<Double> bills = new ArrayList<>();
-        ItemSlot item = currVM.selectItem();
-
-        if(item != null) {
+        if(currVM.selectItem()) {
             int mode;
             do {
                 System.out.println(
@@ -103,28 +123,29 @@ public final class Navigation {
                     " [4] Back\n"
                 );
                 
-                
                 mode = Tools.rangeInput(1, 4);
                 switch (mode) {
-                    case 1 -> bills.addAll(currVM.acceptPayment(item.getPrice()));
-                    case 2 -> currVM.dispenseItem(bills, item);
+                    case 1 -> currVM.acceptPayment();
+                    case 2 -> currVM.dispenseItem();
                     case 3 -> {
-                        if(bills.isEmpty()) System.out.println(C.RED+ " [!] ERROR! Nothing to return" +C.DEF);
-                        else currVM.returnChange(bills);
+                        if(currVM.getInsertedBills().isEmpty()) System.out.println(C.RED+ " [!] ERROR! Nothing to return" +C.DEF);
+                        else currVM.returnChange(currVM.getInsertedBills());
                     }
-                    // case 4 -> vendingMenu();
                 }
                 
-                System.out.println(
-                    "\n\n" +
-                    C.YEL +item.getName()+ ", " +item.getCalories()+ " calories - " +item.getPrice()+C.DEF
-                );
+                System.out.println("\n");
             } 
             while (mode != 4);
         }
 
     }
 
+
+
+    /**
+     * Displays the vending features menu. Users may execute the complete
+     * vending process or test individual vending operations.
+     */
     private static void vendingMenu() {
 
         int mode;
@@ -143,42 +164,60 @@ public final class Navigation {
             
             mode = Tools.rangeInput(1, 3);
             switch (mode) {
-                case 1 -> currVM.vendingProcess();
+                case 1 -> {if(currVM.selectItem()) if(currVM.acceptPayment()) currVM.dispenseItem();}
                 case 2 -> individualVending();
                 case 3 -> testMenu();
             }
+
         } 
         while (mode != 3);
 
     }
 
-    // // ----------------------------------------------------
-
-    // private static void maintenanceMenu() {
 
 
-    //     System.out.println(
-    //         "\n\n" +
-    //         "-".repeat(C.LINE) + "\n" +
-    //         "TESTING \"" +currVM.getName()+ "\" - MAINTENANCE FEATURES\n" +
-    //         "-".repeat(C.LINE) + "\n" +
+    // ----------------------------------------------------
+    // MAINTENANCE FEATURES 
 
-    //         " [4] Finish testing\n"
-    //     );
+    
+    /**
+     * Displays the maintenance features menu. Users may restock items, update
+     * item prices, collect money, replenish cash reserves, and view the
+     * transaction summary.
+     */
+    private static void maintenanceMenu() {
 
+        int mode;
+        do {
 
-    //     int mode = Tools.getRangeInput(1, 4);
-    //     do {
-    //         switch (mode) {
-    //             // case 1 ->
-    //             // case 2 ->
-    //             // case 3 ->
-    //             case 4 -> testMenu();
-    //         }
-    //     } 
-    //     while (mode != 4);
+            System.out.println(
+                "\n\n" +
+                "-".repeat(C.LINE) + "\n" +
+                "MAINTENANCE FEATURES\n" +
+                "-".repeat(C.LINE) + "\n" +
+                
+                " [1] Restock items\n" +
+                " [2] Set item prices\n" +
+                " [3] Collect money\n" +
+                " [4] Replenish cash reserves\n" +
+                " [5] View transaction summary\n" +
+                " [6] Finish testing\n"
+            );
+            
+            mode = Tools.rangeInput(1, 6);
+            switch (mode) {
+                case 1 -> currVM.restockItems();
+                case 2 -> currVM.setItemPrices();
+                case 3 -> currVM.collectMoney();
+                case 4 -> currVM.replenishCashReserves();
+                case 5 -> currVM.viewTransactionSummary();
+                case 6 -> testMenu();
+            }
 
-    // }
+        } 
+        while (mode != 6);
+
+    }
  
 
 }

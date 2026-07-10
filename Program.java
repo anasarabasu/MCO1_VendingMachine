@@ -1,12 +1,14 @@
-import javax.tools.Tool;
+import VM.Tools;
 
 public class Program {
 
 
     public static void main(String[] args) {
         
-        // main program loop
+        // MAIN PROGRAM LOOP
         Navigation.mainMenu();
+
+        // RESOURCE
         Tools.cleanup();
 
     }
