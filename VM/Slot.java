@@ -86,12 +86,7 @@ public class Slot {
     /**
      * Decreases the stock by one and records the sale of the item.
      */
-    public void decreaseStock() {
-
-        stock--;
-        itemsSold++;
-
-    }
+    public void decreaseStock() {stock--;}
 
 
 
@@ -109,29 +104,9 @@ public class Slot {
 
 
     /**
-     * Updates the recorded initial stock to match the current stock and resets
-     * the sales count.
+     * Updates the recorded initial stock to match the current stock.
      */
-    public void updateInitialStock() {
-        
-        initialStock = stock;
-        itemsSold = 0;
-
-    }
-
-
-    
-    /**
-     * The number of units sold since the most recent restocking.
-     */
-    private int itemsSold;
-    
-    /**
-     * Returns the number of units sold since the most recent restocking.
-     *
-     * @return the number of units sold
-     */
-    public int getItemsSold() {return itemsSold;}
+    public void updateInitialStock() {initialStock = stock;}
 
 
 
@@ -145,13 +120,13 @@ public class Slot {
      * @param capacity the desired maximum number of items the slot can hold
      */
     public Slot(Item item, int capacity) {
+        
         this.item = item;
 
         if(capacity < 10) this.capacity = 10;
         else if(capacity > 60) this.capacity = 60;
         else this.capacity = capacity;
         
-
         this.stock = this.capacity;
         this.initialStock = this.stock;
         

@@ -429,7 +429,7 @@ public class VendingMachine {
 
         double total = Tools.sumBills(earnings);
 
-        System.out.println(C.YEL + "\n Total earned: " + total + C.DEF);
+        System.out.println(C.YEL + "\n Total collected: " + total + C.DEF);
         earnings.clear();
 
     }
@@ -445,8 +445,20 @@ public class VendingMachine {
         System.out.println(" Enter the amount of cash to add");
 
         for (int i = 0; i < cashReserve.length; i++) {
-            System.out.print("\n Php " + C.BILLS[i+1] + Tools.getBillType(i+1) + "\n");
+            System.out.print("\n (" + cashReserve[i] + ") Php " + C.BILLS[i+1] + Tools.getBillType(i+1) + "\n");
             cashReserve[i] += Tools.nonNegInt();
+        }
+
+        System.out.println(
+            "\n" +
+            "-".repeat(C.LINE) +
+            "\n" +
+            C.YEL + "Updated cash reserves:" + C.DEF
+        );
+
+        // display updates values
+        for (int i : cashReserve) {
+            System.out.println(" (" + cashReserve[i] + ") Php " + C.BILLS[i+1] + Tools.getBillType(i+1));
         }
 
     }
@@ -474,14 +486,16 @@ public class VendingMachine {
         double sales = 0;
 
         for (Slot slot : slots) {
+            if(slot.getInitialStock() - slot.getStock() == 0) System.out.print(C.GRY);
+
             System.out.println(
                 String.format("%-26s", slot.getItem().getName()) + " | " + 
                 String.format("%-18s", slot.getInitialStock()) + " | " + 
-                String.format("%-18s", slot.getItemsSold()) + " | " +
-                String.format("%-18s", slot.getStock())
+                String.format("%-18s", slot.getInitialStock() - slot.getStock()) + " | " +
+                String.format("%-18s", slot.getStock()) + C.DEF
             );
 
-            sales += slot.getItemsSold() * slot.getItem().getPrice();
+            sales += (slot.getInitialStock() - slot.getStock()) * slot.getItem().getPrice();
         }
 
         System.out.print(

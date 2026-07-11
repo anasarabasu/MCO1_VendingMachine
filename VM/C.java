@@ -31,6 +31,11 @@ public final class C {
      */
     public static final String YEL = "\u001B[33m";
 
+    /**
+     * ANSI escape code for yellow console text.
+     */
+    public static final String GRY = "\u001B[90m";
+
 
     
     /**
