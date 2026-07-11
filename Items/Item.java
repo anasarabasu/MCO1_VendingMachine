@@ -13,16 +13,41 @@ public class Item {
     public int getCalories() {return calories;}
 
 
+    // Number of items this slot can hold
     private int capacity;
+
+    public int getCapacity() {
+    return capacity;
+    }
+
+    //Number of items available in the machine
+    private int stock;
+    public int getStock() {
+    return stock;
+    }
+
+    //Record the stock level after the laast restocking.
+    private int startingStock;
+
+    public int getStartingStock(){
+        return startingStock;
+    }
+
+    public void setStartingStock(int startingStock){
+        this.startingStock = startingStock;
+    }
+
     
-    private int stock = 1;
-    public void decreaseStock() {stock--; System.out.println(stock);}
-    
-    public Item(String name, double price, int calories) {
+    public Item(String name, double price, int calories, int capacity) {
     
         this.name = name;
         this.price = price;
         this.calories = calories;
+        this.capacity = capacity;
+        this.stock = capacity;
+        //When the machine is first created, 
+        // starting inventory is the same as current stock
+        this.startingStock = stock;
     
     }
     
@@ -33,5 +58,26 @@ public class Item {
         else return true;
 
     }
+
+    public void decreaseStock() {
+        stock--; 
+    }
+
+
+    // Adds items during maintenance without exceeding the slot capacity.
+    public void addStock(int amount) {
+
+    if (stock + amount <= capacity) {
+        stock += amount;
+
+        //Update stock
+        startingStock = stock;
+        System.out.println("Stock successfully updated.");
+    }
+    else {
+        System.out.println("Cannot exceed the slot capacity.");
+    }
+
+}
 
 }

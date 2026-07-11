@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import Items.ItemSlot;
 
 public final class Navigation {
 
@@ -78,7 +79,7 @@ public final class Navigation {
             
             switch (Tools.rangeInput(1, 3)) {
                 case 1 -> vendingMenu();
-                // case 2 -> maintenanceMenu();
+                case 2 -> maintenanceMenu();
                 case 3 -> mainMenu();
             }
 
@@ -154,31 +155,47 @@ public final class Navigation {
 
     // // ----------------------------------------------------
 
-    // private static void maintenanceMenu() {
+    public static void maintenanceMenu() {
 
+        int mode;
 
-    //     System.out.println(
-    //         "\n\n" +
-    //         "-".repeat(C.LINE) + "\n" +
-    //         "TESTING \"" +currVM.getName()+ "\" - MAINTENANCE FEATURES\n" +
-    //         "-".repeat(C.LINE) + "\n" +
+        do {
 
-    //         " [4] Finish testing\n"
-    //     );
+            System.out.println(
+                "\n\n" +
+                "-".repeat(C.LINE) + "\n" +
+                "MAINTENANCE FEATURES\n" +
+                "-".repeat(C.LINE) + "\n" +
 
+                " [1] Restock Item\n" +
+                " [2] Set Item Price\n" +
+                " [3] Replenish Cash\n" +
+                " [4] Collect Money\n" +
+                " [5] Transaction Summary\n" +
+                " [6] Back\n"
+            );
 
-    //     int mode = Tools.getRangeInput(1, 4);
-    //     do {
-    //         switch (mode) {
-    //             // case 1 ->
-    //             // case 2 ->
-    //             // case 3 ->
-    //             case 4 -> testMenu();
-    //         }
-    //     } 
-    //     while (mode != 4);
+            mode = Tools.rangeInput(1, 6);
 
-    // }
+            switch (mode) {
+
+                case 1 -> currVM.restockItem();
+
+                case 2 -> currVM.setItemPrice();
+
+                case 3 -> currVM.replenishCash();
+
+                case 4 -> currVM.collectMoney();
+
+                case 5 -> currVM.printTransactionSummary();
+
+                case 6 -> testMenu();
+
+            }
+
+        } while (mode != 6);
+
+    }
  
 
 }

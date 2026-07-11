@@ -74,7 +74,7 @@ public class VM {
             System.out.print("\n Slot capacity: (1-16)\n");
             int capacity = Tools.rangeInput(1, 16);
             
-            items[i] = new Item(name, price, calories);
+            items[i] = new Item(name, price, calories, capacity);
         }
 
     }
@@ -91,15 +91,15 @@ public class VM {
         };
 
         items = new Item[9];
-        items[0] = new Item("Choco", 100, 100);
-        items[1] = new Item("Soda", 50, 1000);
-        items[2] = new Item("Noodles", 75.25, 1023);
-        items[3] = new Item("Chips", 12.25, 676767);
-        items[4] = new Item("Water", 1, 0);
-        items[5] = new Item("Coffee", 99.25, 99);
-        items[6] = new Item("Juice", 69.50, 1);
-        items[7] = new Item("Milktea", 100, 46);
-        items[8] = new Item("Samwich", 44, 44);
+        items[0] = new Item("Choco", 100, 100,12);
+        items[1] = new Item("Soda", 50, 1000, 10);
+        items[2] = new Item("Noodles", 75.25, 1023, 10);
+        items[3] = new Item("Chips", 12.25, 676767, 12);
+        items[4] = new Item("Water", 1, 0,10 );
+        items[5] = new Item("Coffee", 99.25, 99, 10);
+        items[6] = new Item("Juice", 69.50, 1, 10);
+        items[7] = new Item("Milktea", 100, 46, 10);
+        items[8] = new Item("Samwich", 44, 44, 8);
 
     }
 
@@ -276,5 +276,215 @@ public class VM {
     
     // ----------------------------------------------------
     // MAINTENANCE
+
+
+    //Restocks a selected item in the vending machine
+    public void restockItem() {
+
+        System.out.println(
+            "\n\n" +
+            "-".repeat(C.LINE) + "\n" +
+            "RESTOCK ITEM\n" +
+            "-".repeat(C.LINE)
+        );
+
+    // Display all items with their current stock and capacity.
+        for (int i = 0; i < items.length; i++) {
+            System.out.println(
+               "[" + (i + 1) + "] "
+              + items[i].getName()
+               + " ("
+             + items[i].getStock()
+             + "/"
+                + items[i].getCapacity()
+              + ")"
+          );
+        }
+
+        // Ask the user which item they want to restock.
+        System.out.println("\nSelect an item to restock:");
+        int choice = Tools.rangeInput(1, items.length);
+
+        int quantity;
+
+        // Continue asking until the entered quantity does not exceed
+        // the maximum capacity of the selected item.
+        do {
+
+            System.out.println("\nEnter quantity to add:");
+            quantity = Tools.nonNegInt();
+
+            if (items[choice - 1].getStock() + quantity > items[choice - 1].getCapacity()) {
+                System.out.println(C.RED + "Cannot exceed slot capacity." + C.DEF);
+            }
+
+        } while (items[choice - 1].getStock() + quantity > items[choice - 1].getCapacity());
+
+        // Add the entered quantity to the selected item's stock.
+        items[choice - 1].addStock(quantity);
+
+        System.out.println(C.YEL + "\nItem successfully restocked!" + C.DEF);
+
+        }
+
+    /**
+    * Allows the maintenance user to change the price of an item.
+    */
+    public void setItemPrice() {
+
+        System.out.println(
+            "\n\n" +
+            "-".repeat(C.LINE) + "\n" +
+            "SET ITEM PRICE\n" +
+            "-".repeat(C.LINE)
+        );
+
+        // Display all items with their current prices.
+        for (int i = 0; i < items.length; i++) {
+
+            System.out.println(
+                "[" + (i + 1) + "] "
+                + items[i].getName()
+                + " - Php "
+                + String.format("%.2f", items[i].getPrice())
+            );
+
+        }
+
+        // Ask the user which item to update.
+        System.out.println("\nSelect an item:");
+
+        int choice = Tools.rangeInput(1, items.length);
+
+        // Ask for the new price.
+        System.out.println("\nEnter the new price:");
+
+        double newPrice = Tools.nonNegDouble();
+
+        // Update the selected item's price.
+        items[choice - 1].setPrice(newPrice);
+
+        System.out.println(C.YEL + "\nPrice successfully updated!" + C.DEF);
+
+    }
+
+    /**
+     * Allows the maintenance user to replenish the machine's cash reserve.
+     */
+    public void replenishCash() {
+
+        System.out.println(
+                "\n\n" +
+                "-".repeat(C.LINE) + "\n" +
+                "REPLENISH CASH\n" +
+                "-".repeat(C.LINE)
+            );
+
+            // Display all cash denominations and their current quantity.
+            for (int i = 0; i < cashReserve.length; i++) {
+
+                System.out.println(
+                    "[" + (i + 1) + "] Php "
+                    + C.BILLS[i + 1]
+                    + " | Current: "
+                    + cashReserve[i]
+                );
+
+            }
+
+            // Ask the user which denomination to replenish.
+            System.out.println("\nSelect a denomination:");
+            int choice = Tools.rangeInput(1, cashReserve.length);
+
+            // Ask how many bills or coins to add.
+            System.out.println("\nEnter quantity to add:");
+            int amount = Tools.nonNegInt();
+
+            // Update the machine's cash reserve.
+            cashReserve[choice - 1] += amount;
+
+            System.out.println(C.YEL + "\nCash reserve successfully updated!" + C.DEF);
+
+        }
+
+    /**
+     * Displays a summary of item sales since the last restocking.
+     */
+    public void printTransactionSummary() {
+
+        System.out.println(
+            "\n\n" +
+            "-".repeat(C.LINE) + "\n" +
+            "TRANSACTION SUMMARY\n" +
+            "-".repeat(C.LINE)
+        );
+
+        // Stores the total sales amount.
+        double totalSales = 0;
+
+        // Display the sales information for every item.
+        for (int i = 0; i < items.length; i++) {
+
+            // Calculate the number of items sold since the last restocking.
+            int quantitySold = items[i].getStartingStock() - items[i].getStock();
+
+            // Calculate the sales amount for this item.
+            double sales = quantitySold * items[i].getPrice();
+
+            // Add this item's sales to the total sales.
+            totalSales += sales;
+
+            System.out.println("\nItem: " + items[i].getName());
+            System.out.println("Starting Inventory: " + items[i].getStartingStock());
+            System.out.println("Ending Inventory: " + items[i].getStock());
+            System.out.println("Quantity Sold: " + quantitySold);
+            System.out.println("Sales: Php " + String.format("%.2f", sales));
+        }
+
+        System.out.println("\n--------------------------------");
+        System.out.println("Total Sales: Php " + String.format("%.2f", totalSales));
+        
+        // Reset the starting inventory after collecting the earnings.
+        for (int i = 0; i < items.length; i++) {
+            items[i].setStartingStock(items[i].getStock());
+        }
+
+    }
+
+    /**
+     * Displays and collects the total money earned
+     * from item sales since the last restocking.
+     */
+    public void collectMoney() {
+
+        System.out.println(
+            "\n\n" +
+            "-".repeat(C.LINE) + "\n" +
+            "COLLECT MONEY\n" +
+            "-".repeat(C.LINE)
+        );
+
+        // Stores the total money collected from all item sales.
+        double totalCollected = 0;
+
+        // Calculate the sales amount for each item.
+        for (int i = 0; i < items.length; i++) {
+
+            // Determine how many of this item were sold.
+            int quantitySold = items[i].getStartingStock() - items[i].getStock();
+
+            // Add this item's sales to the total amount collected.
+            totalCollected += quantitySold * items[i].getPrice();
+
+        }
+
+        System.out.println("Money collected: Php "
+                + String.format("%.2f", totalCollected));
+
+        System.out.println(C.YEL + "\nMoney successfully collected!" + C.DEF);
+
+    }
+
+
 
 }
